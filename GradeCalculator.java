@@ -10,36 +10,26 @@ public class GradeCalculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // this should read the number of PA and their scores
+        // Read number of programming assignments and their scores
         int numAssignments = scanner.nextInt();
         double[] assignmentScores = new double[numAssignments];
         double totalScore = 0.0;
         for (int i = 0; i < numAssignments; i++) {
             if (scanner.hasNextDouble()) {
                 double score = scanner.nextDouble();
-                if (score < 0) {
-                    System.out.println("invalid input");
-                    return;
-                }
                 assignmentScores[i] = score;
                 totalScore += score;
             } else {
-                System.out.println("invalid input");
+                System.out.println("Invalid input");
                 return;
             }
         }
         double averageScore = totalScore / numAssignments;
 
-        // this one reades the scores of the midterm and final
+        // Read midterm and final scores
         if (scanner.hasNextDouble()) {
             double midtermScore = scanner.nextDouble();
             double finalScore = scanner.nextDouble();
-
-            // checks for any negative values
-            if (midtermScore < 0 || finalScore < 0) {
-                System.out.println("invalid input");
-                return;
-            }
 
             // Calculate total score
             double paWeight = 0.5;
@@ -61,10 +51,25 @@ public class GradeCalculator {
                 letterGrade = "F";
             }
 
-            // Display results
-            System.out.println("Programming assignment average: " + averageScore);
-            System.out.println("Total score: " + totalScore);
-            System.out.println("Letter grade: " + letterGrade);
+            // Check for negative grades or grades over 100
+            boolean invalidInput = false;
+            for (double score : assignmentScores) {
+                if (score < 0 || score > 100) {
+                    invalidInput = true;
+                    break;
+                }
+            }
+            if (midtermScore < 0 || midtermScore > 100 || finalScore < 0 || finalScore > 100) {
+                invalidInput = true;
+            }
+
+            // Display results or print "Invalid input"
+            if (invalidInput) {
+                System.out.println("Invalid input");
+            } else {
+                System.out.println("Total score: " + totalScore);
+                System.out.println("Letter grade: " + letterGrade);
+            }
         } else {
             System.out.println("Invalid input");
         }
